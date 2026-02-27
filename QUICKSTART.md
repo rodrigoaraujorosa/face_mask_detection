@@ -6,7 +6,7 @@ Get up and running with Face Mask Detection in 5 minutes!
 
 ```bash
 # Navigate to project
-cd /home/rodrigo/.openclaw/workspace/face-mask-detection/
+cd /home/<user>/workspace/face-mask-detection/
 
 # Create virtual environment
 python -m venv venv

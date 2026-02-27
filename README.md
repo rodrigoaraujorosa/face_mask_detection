@@ -39,7 +39,7 @@ face-mask-detection/
 
 1. **Clone or navigate to the project directory:**
    ```bash
-   cd /home/rodrigo/.openclaw/workspace/face-mask-detection/
+   cd /home/<user>/workspace/face-mask-detection/
    ```
 
 2. **Create a virtual environment (recommended):**
