@@ -34,18 +34,35 @@ face-mask-detection/
 - Python 3.8 or higher
 - CUDA-capable GPU (recommended for faster training)
 - VSCode with Jupyter extension (or Jupyter Lab)
+- NVIDIA drivers installed and working (`nvidia-smi`)
 
 ### Setup Instructions
 
 1. **Clone or navigate to the project directory:**
    ```bash
-   cd /home/<user>/workspace/face-mask-detection/
+   cd <path-to>/face_mask_detection
    ```
 
 2. **Create a virtual environment (recommended):**
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+   **Activate the environment:**
+
+   Linux/macOS:
+   ```bash
+   source venv/bin/activate
+   ```
+
+   Windows (PowerShell):
+   ```powershell
+   .\venv\Scripts\Activate.ps1
+   ```
+
+   Windows (Git Bash):
+   ```bash
+   source venv/Scripts/activate
    ```
 
 3. **Install dependencies:**
@@ -53,9 +70,28 @@ face-mask-detection/
    pip install -r requirements.txt
    ```
 
-4. **Verify installation:**
+4. **Install PyTorch with CUDA support (NVIDIA GPU):**
+
+   If your GPU supports modern CUDA architectures, install CUDA 12.9 wheels:
    ```bash
-   python -c "import torch; print(torch.__version__)"
+   pip uninstall -y torch torchvision torchaudio
+   pip install --no-cache-dir --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu129
+   ```
+
+   For GPUs with compute capability `6.1` (for example GeForce MX330), use CUDA 12.6 wheels:
+   ```bash
+   pip uninstall -y torch torchvision torchaudio
+   pip install --no-cache-dir --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+   ```
+
+5. **Verify CUDA is available:**
+   ```bash
+   python -c "import torch; print(torch.__version__); print('cuda:', torch.version.cuda); print('ok:', torch.cuda.is_available()); print('cap:', torch.cuda.get_device_capability(0) if torch.cuda.is_available() else 'N/A')"
+   ```
+
+6. **Optional: run a quick GPU test:**
+   ```bash
+   python -c "import torch; x=torch.randn(1024,1024,device='cuda'); y=x@x; print('matmul ok', y.shape)"
    ```
 
 ## 📖 Usage
@@ -130,6 +166,12 @@ You can modify these parameters in the notebook:
 **Issue: CUDA out of memory**
 - Reduce batch size in the notebook
 - Close other GPU-intensive applications
+
+**Issue: GPU detected but warning about unsupported `sm_xx` (compute capability)**
+- Reinstall PyTorch with a CUDA wheel that supports your GPU architecture
+- Example for MX330 (`sm_61`):
+   - `pip uninstall -y torch torchvision torchaudio`
+   - `pip install --no-cache-dir --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126`
 
 **Issue: kagglehub authentication error**
 - Ensure you have Kaggle credentials configured
